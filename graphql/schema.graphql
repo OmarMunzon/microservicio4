@@ -1,0 +1,33 @@
+type Ministerio {
+    id: ID!
+    nombre: String!
+    fecha_creacion: String!
+    descripcion: String
+    miembro_id: String!
+}
+
+type Query {
+    ministerios: [Ministerio!]! @all
+    ministerio(id: ID! @eq): Ministerio @find
+}
+
+type Mutation {
+    createMinisterio(
+        nombre: String! @rules(apply: ["required", "string", "max:255"])
+        fecha_creacion: String @rules(apply: ["string"])
+        descripcion: String @rules(apply: ["string"])
+        miembro_id: String! @rules(apply: ["string"])
+    ): Ministerio @create
+
+    updateMinisterio(
+        id: ID! @rules(apply: ["required"])
+        nombre: String @rules(apply: ["string", "max:255"])
+        fecha_creacion: String @rules(apply: ["string"])
+        descripcion: String @rules(apply: ["string"])
+        miembro_id: String
+    ): Ministerio @update
+
+   deleteMinisterio(
+    id: ID! @rules(apply: ["required"]) @whereKey
+  ): Ministerio @delete
+}
